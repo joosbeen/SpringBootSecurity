@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title></title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="static/vendor/bootstrap/4.5.2/css/bootstrap.min.css" th:href="@{/vendor/bootstrap/4.5.2/css/bootstrap.min.css}">
+		<link rel="stylesheet" href="static/css/spring.css" th:href="@{/css/spring.css}">
+		<script src="static/vendor/jquery/3.5.1/jquery.min.js" th:src="@{/vendor/jquery/3.5.1/jquery.min.js}"></script>
+		<script src="static/vendor/popper.js/1.16.0/umd/popper.min.js" th:src="@{/vendor/popper.js/1.16.0/umd/popper.min.js}"></script>
+		<script src="static/vendor/bootstrap/4.5.2/js/bootstrap.min.js" th:src="@{/vendor/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
+		<script src="static/vendor/bootstrap/4.5.2/js/bootstrap.min.js" th:src="@{/vendor/bootstrap/4.5.2/js/bootstrap.min.js}"></script>
+	</head>
+	<body>
+		<div th:replace="~{fragments/menu_admin :: uAdmin}"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-4"></div>
+				<div class="col-md-4 border-light shadow-lg p-3 rounded-lg">
+					<h4 class="text-center" th:text="#{${autor.id == null} ? 'txt.registrar' : 'txt.actualizar'}"></h4>
+					<hr>
+					<div class="alert alert-warning" th:if="${error!=null}">
+						<strong th:text="#{${error}}"></strong>
+					</div>
+					<div class="alert alert-success" th:if="${exito!=null}">
+						<strong th:text="#{${exito}}"></strong>
+					</div>
+					<form method="post" th:action="@{/admin/autor/form}" th:object="${autor}">
+						<span th:if="${autor.id != null}">
+							<input type="hidden" id="id" th:field="*{id}" th:value="*{id}" name="id">
+						</span>
+						<div class="form-group">
+							<label for="nombre" th:text="#{campo.nombre}"></label>
+							<input type="text" class="form-control" id="nombre" th:field="*{nombre}" th:value="*{nombre}" name="nombre" required>
+							<ul class="text-danger">
+								<li th:each="err : ${#fields.errors('nombre')}" th:utext="#{${err}}"></li>
+							</ul>
+						</div>
+						<div class="form-group">
+							<label for="apellidos" th:text="#{campo.apellidos}"></label>
+							<input type="text" class="form-control" id="apellidos" th:field="*{apellidos}" th:value="*{apellidos}" name="apellidos" required>
+							<ul class="text-danger">
+								<li th:each="err : ${#fields.errors('apellidos')}" th:text="#{${err}}"></li>
+							</ul>
+						</div>
+						<div class="form-group">
+							<label for="pais">Pais:</label>
+							<select class="form-control" th:field="*{pais}" id="pais" name="pais" required>
+								<option th:each="pais, it : ${paises}" th:text="${pais.pais}" th:value=${pais.id}></option>
+							</select>
+						</div>
+						<button type="submit" class="btn btn-secondary btn-block" th:text="#{txt.guardar}"></button>
+					</form>
+				</div>
+				<div class="col-md-4"></div>
+			</div>
+		</div>
+		<div th:replace="~{fragments/footer :: footer}"></div>
+	</body>
+</html>
